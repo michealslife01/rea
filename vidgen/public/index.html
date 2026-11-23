@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VidGen</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>VidGen</h1>
+    <div id="status" class="chips"></div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2><span class="num">1</span> Your idea</h2>
+      <textarea id="prompt" rows="3" placeholder="e.g. 5 surprising facts about octopuses"></textarea>
+      <div class="row">
+        <label>Length
+          <select id="seconds">
+            <option value="15">15 seconds</option>
+            <option value="30" selected>30 seconds</option>
+            <option value="45">45 seconds</option>
+            <option value="60">60 seconds</option>
+            <option value="90">90 seconds</option>
+          </select>
+        </label>
+        <label>Tone <select id="tone"></select></label>
+        <div class="spacer"></div>
+        <button id="write-myself" class="secondary">I'll write it myself</button>
+        <button id="write">Write script with AI</button>
+      </div>
+      <p id="script-error" class="error" hidden></p>
+    </section>
+
+    <section class="card" id="script-card" hidden>
+      <h2><span class="num">2</span> Script <small id="estimate"></small></h2>
+      <label class="block">Title <input id="title" placeholder="Video title"></label>
+      <ol id="scenes"></ol>
+      <button id="add-scene" class="secondary">+ Add scene</button>
+      <div class="row render-row">
+        <label>Format <select id="format"></select></label>
+        <label class="check"><input type="checkbox" id="voice" checked> Voiceover</label>
+        <div class="spacer"></div>
+        <button id="render">Generate video</button>
+      </div>
+    </section>
+
+    <section class="card" id="job-card" hidden>
+      <h2><span class="num">3</span> Your video</h2>
+      <div id="job-progress">
+        <div class="bar"><div id="bar-fill"></div></div>
+        <p id="job-step"></p>
+      </div>
+      <p id="job-error" class="error" hidden></p>
+      <div id="job-result" hidden>
+        <video id="result-video" controls playsinline></video>
+        <div class="row">
+          <a id="result-download" class="button" download>Download MP4</a>
+        </div>
+        <ul id="result-notes" class="notes"></ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Library</h2>
+      <p id="library-empty" class="muted">Videos you make show up here.</p>
+      <div id="library" class="grid"></div>
+    </section>
+  </main>
+
+  <template id="scene-template">
+    <li class="scene">
+      <textarea class="narration" rows="2" placeholder="What the narrator says"></textarea>
+      <div class="scene-foot">
+        <input class="visual" placeholder="Footage search, e.g. ocean waves at sunset">
+        <button class="remove icon" title="Remove scene" aria-label="Remove scene">✕</button>
+      </div>
+    </li>
+  </template>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
