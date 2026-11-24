@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { UserError } from './config.js';
+import { config, UserError } from './config.js';
 
 const SCRIPT_SCHEMA = {
   type: 'object',
@@ -39,6 +39,9 @@ let client;
  * @returns {Promise<{title: string, scenes: {narration: string, visual: string}[]}>}
  */
 export async function writeScript({ prompt, seconds, tone }) {
+  if (!config.hasClaude) {
+    throw new UserError('The app has no Claude API key. Add ANTHROPIC_API_KEY to the .env file in the vidgen folder, save it, then restart the app (Ctrl+C, then npm start).');
+  }
   client ??= new Anthropic();
   const words = Math.round(seconds * 2.5);
   const sceneCount = Math.max(3, Math.round(seconds / 5));
@@ -72,9 +75,6 @@ export async function writeScript({ prompt, seconds, tone }) {
     }
     if (error instanceof Anthropic.APIError) {
       throw new UserError(`Claude API error ${error.status ?? ''}: ${error.message}`);
-    }
-    if (error instanceof Error && /api key|auth/i.test(error.message)) {
-      throw new UserError('No Claude API key found. Add ANTHROPIC_API_KEY to your .env file and restart the app.');
     }
     throw error;
   }

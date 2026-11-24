@@ -1,5 +1,10 @@
-import 'dotenv/config';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import dotenv from 'dotenv';
+
+// The vidgen folder, so the app finds its files wherever it is started from.
+export const appDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+dotenv.config({ path: path.join(appDir, '.env'), quiet: true });
 
 const env = (name) => {
   const value = process.env[name]?.trim();
@@ -14,8 +19,8 @@ export const config = {
   elevenLabsVoice: env('ELEVENLABS_VOICE_ID') || '21m00Tcm4TlvDq8ikWAM',
   elevenLabsModel: env('ELEVENLABS_MODEL_ID') || 'eleven_multilingual_v2',
   pexelsKey: env('PEXELS_API_KEY'),
-  outputDir: path.resolve(env('OUTPUT_DIR') || 'output'),
-  musicDir: path.resolve(env('MUSIC_DIR') || 'music'),
+  outputDir: path.resolve(appDir, env('OUTPUT_DIR') || 'output'),
+  musicDir: path.resolve(appDir, env('MUSIC_DIR') || 'music'),
   ffmpegPath: env('FFMPEG_PATH'),
 };
 

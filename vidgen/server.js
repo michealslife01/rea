@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import express from 'express';
-import { config, FORMATS, UserError } from './src/config.js';
+import { appDir, config, FORMATS, UserError } from './src/config.js';
 import { deleteVideo, getJob, listVideos, startRender } from './src/render.js';
 import { writeScript } from './src/script.js';
 
@@ -12,7 +12,7 @@ await fs.mkdir(config.outputDir, { recursive: true });
 
 const app = express();
 app.use(express.json({ limit: '200kb' }));
-app.use(express.static(path.resolve('public')));
+app.use(express.static(path.join(appDir, 'public')));
 app.use('/videos', express.static(config.outputDir));
 
 const text = (value, max) => (typeof value === 'string' ? value.trim().slice(0, max) : '');
